@@ -4,6 +4,7 @@ import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: '/pwa-install-test/',
   plugins: [
     react(),
     VitePWA({
@@ -16,23 +17,23 @@ export default defineConfig({
         theme_color: '#000000',
         background_color: '#ffffff',
         display: 'standalone',
-        scope: '/',
-        start_url: '/',
+        scope: '/pwa-install-test/',
+        start_url: '/pwa-install-test/',
         icons: [
           {
-            src: '/icon-192x192.png',
+            src: 'icon-192x192.png',
             sizes: '192x192',
             type: 'image/png',
             purpose: 'any',
           },
           {
-            src: '/icon-512x512.png',
+            src: 'icon-512x512.png',
             sizes: '512x512',
             type: 'image/png',
             purpose: 'any maskable',
           },
           {
-            src: '/apple-touch-icon.png',
+            src: 'apple-touch-icon.png',
             sizes: '180x180',
             type: 'image/png',
           },
