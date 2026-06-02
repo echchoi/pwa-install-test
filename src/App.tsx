@@ -18,28 +18,36 @@ function App() {
   }
 
   const platform = getPlatform()
+  const isIOS = platform === 'iOS'
   const version = pkg?.version ?? '0.0.0'
   const buildTimestamp = (import.meta as any).env?.VITE_BUILD_TIMESTAMP ?? new Date().toISOString()
 
   const openShareMenu = async () => {
     const url = window.location.href
     const title = document.title || 'PWA Installation Testing'
-    // Try Web Share API first (opens native share sheet on supported iOS/Android)
-    if ('share' in navigator) {
+
+    // On iOS Safari, the Web Share API does not provide the normal Safari
+    // Add to Home Screen option. Use copy+instruction flow instead.
+    if (!isIOS && 'share' in navigator) {
       try {
         await (navigator as any).share({ title, url })
         return
-      } catch (e) {
-        // fall through to fallback
+      } catch (e: any) {
+        if (e?.name === 'AbortError' || e?.name === 'NotAllowedError') {
+          return
+        }
       }
     }
 
-    // Fallback: copy URL and instruct user how to use the Share menu to Add to Home Screen
     try {
       await navigator.clipboard.writeText(url)
-      alert('URL copied to clipboard. In Safari tap the Share button and choose "Add to Home Screen".')
+      alert(
+        'URL copied to clipboard. In Safari, open the Share menu and choose "Add to Home Screen".'
+      )
     } catch {
-      alert('Open the Share menu in Safari and choose "Add to Home Screen" to install the app.')
+      alert(
+        'Copy this page URL and open the Share menu in Safari, then choose "Add to Home Screen".'
+      )
     }
   }
 
@@ -100,8 +108,10 @@ function App() {
               <div>Try using Chrome/Edge on Android, or Safari on iOS to test installation</div>
             </div>
             <div className="action-buttons">
-              {platform === 'iOS' && (
-                <button onClick={openShareMenu}>📤 Open Share Menu (iOS)</button>
+              {isIOS && (
+                <button onClick={openShareMenu}>
+                  📤 Copy URL / Open Safari Share Instructions (iOS)
+                </button>
               )}
               <button onClick={clearCache}>🗑️ Clear Cache</button>
             </div>
