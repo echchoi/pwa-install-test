@@ -39,10 +39,12 @@ export default defineConfig({
           },
         ],
       },
+      manifestFilename: 'manifest.json',
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
         maximumFileSizeToCacheInBytes: 5242880,
       },
+      injectRegister: false,
       devOptions: {
         enabled: false,
       },

@@ -2,7 +2,7 @@ import './App.css'
 import { useServiceWorker } from './hooks/useServiceWorker'
 
 function App() {
-  const { isInstallable, isInstalled, handleInstall, swActive, manifestLoaded } =
+  const { isInstallable, isInstalled, swActive, manifestLoaded } =
     useServiceWorker()
 
   const getPlatform = (): string => {
@@ -13,6 +13,30 @@ function App() {
     if (ua.includes('win')) return 'Windows'
     if (ua.includes('linux')) return 'Linux'
     return 'Unknown'
+  }
+
+  const platform = getPlatform()
+
+  const openShareMenu = async () => {
+    const url = window.location.href
+    const title = document.title || 'PWA Installation Testing'
+    // Try Web Share API first (opens native share sheet on supported iOS/Android)
+    if ('share' in navigator) {
+      try {
+        await (navigator as any).share({ title, url })
+        return
+      } catch (e) {
+        // fall through to fallback
+      }
+    }
+
+    // Fallback: copy URL and instruct user how to use the Share menu to Add to Home Screen
+    try {
+      await navigator.clipboard.writeText(url)
+      alert('URL copied to clipboard. In Safari tap the Share button and choose "Add to Home Screen".')
+    } catch {
+      alert('Open the Share menu in Safari and choose "Add to Home Screen" to install the app.')
+    }
   }
 
   const clearCache = async () => {
@@ -67,33 +91,16 @@ function App() {
         <section className="section">
           <h2>🎯 Installation & Actions</h2>
           <div className="actions">
-            {isInstallable && !isInstalled && (
-              <button
-                className="btn btn-primary"
-                onClick={handleInstall}
-                title="Trigger the native PWA installation dialog"
-              >
-                📥 Install App
-              </button>
-            )}
-            {isInstalled && (
-              <div className="installed-message">
-                <p>✓ App is already installed!</p>
-                <small>Open it from your home screen or app drawer</small>
-              </div>
-            )}
-            {!isInstallable && !isInstalled && (
-              <div className="warning-message">
-                <p>ℹ️ Installation not currently available</p>
-                <small>
-                  Try using Chrome/Edge on Android, or Safari on iOS to test
-                  installation
-                </small>
-              </div>
-            )}
-            <button className="btn btn-secondary" onClick={clearCache}>
-              🗑️ Clear Cache
-            </button>
+            <div>
+              <p>ℹ️ Installation not currently available</p>
+              <div>Try using Chrome/Edge on Android, or Safari on iOS to test installation</div>
+            </div>
+            <div className="action-buttons">
+              {platform === 'iOS' && (
+                <button onClick={openShareMenu}>📤 Open Share Menu (iOS)</button>
+              )}
+              <button onClick={clearCache}>🗑️ Clear Cache</button>
+            </div>
           </div>
         </section>
 
@@ -187,8 +194,8 @@ function App() {
           <div className="app-info">
             <p>
               <strong>Manifest:</strong>{' '}
-              <a href="/manifest.json" target="_blank" rel="noopener noreferrer">
-                /manifest.json
+              <a href="manifest.json" target="_blank" rel="noopener noreferrer">
+                manifest.json
               </a>
             </p>
             <p>

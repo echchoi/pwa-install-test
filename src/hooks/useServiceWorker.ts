@@ -75,7 +75,7 @@ export function useServiceWorker(): UseServiceWorkerReturn {
     // Check if manifest is loaded
     const checkManifest = async () => {
       try {
-        const response = await fetch('/manifest.json');
+        const response = await fetch('manifest.json');
         setManifestLoaded(response.ok);
       } catch {
         setManifestLoaded(false);
