@@ -1,5 +1,7 @@
 import './App.css'
 import { useServiceWorker } from './hooks/useServiceWorker'
+// import package.json to display current version in the UI
+import pkg from '../package.json'
 
 function App() {
   const { isInstallable, isInstalled, swActive, manifestLoaded } =
@@ -16,6 +18,7 @@ function App() {
   }
 
   const platform = getPlatform()
+  const version = pkg?.version ?? '0.0.0'
 
   const openShareMenu = async () => {
     const url = window.location.href
@@ -213,6 +216,7 @@ function App() {
 
       <footer className="app-footer">
         <p>PWA Installation Testing • Open DevTools to inspect PWA components</p>
+        <p className="app-version">Version: {version}</p>
       </footer>
     </div>
   )
