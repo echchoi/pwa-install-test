@@ -20,15 +20,26 @@ function App() {
   const platform = getPlatform()
   const isIOS = platform === 'iOS'
   const version = pkg?.version ?? '0.0.0'
-  const buildTimestamp = (import.meta as any).env?.VITE_BUILD_TIMESTAMP ?? new Date().toISOString()
+  const rawBuildTimestamp = (import.meta as any).env?.VITE_BUILD_TIMESTAMP ?? new Date().toISOString()
+
+  const formatUTC8 = (timestamp: string) => {
+    const date = new Date(timestamp)
+    if (Number.isNaN(date.getTime())) {
+      return timestamp
+    }
+
+    const utc8 = new Date(date.getTime() + 8 * 60 * 60 * 1000)
+    const pad = (value: number) => String(value).padStart(2, '0')
+    return `${utc8.getUTCFullYear()}-${pad(utc8.getUTCMonth() + 1)}-${pad(utc8.getUTCDate())} ${pad(utc8.getUTCHours())}:${pad(utc8.getUTCMinutes())}:${pad(utc8.getUTCSeconds())} +08:00`
+  }
+
+  const buildTimestamp = formatUTC8(rawBuildTimestamp)
 
   const openShareMenu = async () => {
     const url = window.location.href
     const title = document.title || 'PWA Installation Testing'
 
-    // On iOS Safari, the Web Share API does not provide the normal Safari
-    // Add to Home Screen option. Use copy+instruction flow instead.
-    if (!isIOS && 'share' in navigator) {
+    if ('share' in navigator) {
       try {
         await (navigator as any).share({ title, url })
         return
@@ -36,17 +47,18 @@ function App() {
         if (e?.name === 'AbortError' || e?.name === 'NotAllowedError') {
           return
         }
+        // fall through to fallback below
       }
     }
 
     try {
       await navigator.clipboard.writeText(url)
       alert(
-        'URL copied to clipboard. In Safari, open the Share menu and choose "Add to Home Screen".'
+        'Share sheet unavailable or closed. URL copied to clipboard. In Safari, open the Share menu and choose "Add to Home Screen".'
       )
     } catch {
       alert(
-        'Copy this page URL and open the Share menu in Safari, then choose "Add to Home Screen".'
+        'Unable to open the share sheet. Copy the page URL and open Safari Share → Add to Home Screen.'
       )
     }
   }
@@ -109,9 +121,14 @@ function App() {
             </div>
             <div className="action-buttons">
               {isIOS && (
-                <button onClick={openShareMenu}>
-                  📤 Copy URL / Open Safari Share Instructions (iOS)
-                </button>
+                <div className="ios-instructions">
+                  <button onClick={openShareMenu}>
+                    📤 Open Share Sheet
+                  </button>
+                  <p className="instruction-text">
+                    Can't find 'Add to Home Screen'? Tap the <strong>Safari share button</strong> (square with arrow) → 'Add to Home Screen'
+                  </p>
+                </div>
               )}
               <button onClick={clearCache}>🗑️ Clear Cache</button>
             </div>
