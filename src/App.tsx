@@ -2,6 +2,8 @@ import './App.css'
 import { useServiceWorker } from './hooks/useServiceWorker'
 // import package.json to display current version in the UI
 import pkg from '../package.json'
+import IOSInstallModal from './components/IOSInstallModal';
+import './components/IOSInstallModal.css';
 
 function App() {
   const { isInstallable, isInstalled, swActive, manifestLoaded } =
@@ -35,6 +37,8 @@ function App() {
 
   const buildTimestamp = formatUTC8(rawBuildTimestamp)
 
+  const [showIOSModal, setShowIOSModal] = useState<boolean>(false);
+
   const openShareMenu = async () => {
     const url = window.location.href
     const title = document.title || 'PWA Installation Testing'
@@ -57,9 +61,7 @@ function App() {
         'Share sheet unavailable or closed. URL copied to clipboard. In Safari, open the Share menu and choose "Add to Home Screen".'
       )
     } catch {
-      alert(
-        'Unable to open the share sheet. Copy the page URL and open Safari Share → Add to Home Screen.'
-      )
+      setShowIOSModal(true);
     }
   }
 
@@ -121,14 +123,15 @@ function App() {
             </div>
             <div className="action-buttons">
               {isIOS && (
-                <div className="ios-instructions">
-                  <button onClick={openShareMenu}>
-                    📤 Open Share Sheet
+                <>
+                  <button onClick={() => setShowIOSModal(true)}>
+                    📤 How to Add to Home Screen
                   </button>
-                  <p className="instruction-text">
-                    Can't find 'Add to Home Screen'? Tap the <strong>Safari share button</strong> (square with arrow) → 'Add to Home Screen'
-                  </p>
-                </div>
+                  <IOSInstallModal
+                    isOpen={showIOSModal}
+                    onClose={() => setShowIOSModal(false)}
+                  />
+                </>
               )}
               <button onClick={clearCache}>🗑️ Clear Cache</button>
             </div>
