@@ -19,6 +19,7 @@ function App() {
 
   const platform = getPlatform()
   const version = pkg?.version ?? '0.0.0'
+  const buildTimestamp = (import.meta as any).env?.VITE_BUILD_TIMESTAMP ?? new Date().toISOString()
 
   const openShareMenu = async () => {
     const url = window.location.href
@@ -216,7 +217,7 @@ function App() {
 
       <footer className="app-footer">
         <p>PWA Installation Testing • Open DevTools to inspect PWA components</p>
-        <p className="app-version">Version: {version}</p>
+        <p className="app-version">Version: {version} • Build: {buildTimestamp}</p>
       </footer>
     </div>
   )
