@@ -96,9 +96,14 @@ function App() {
               <p>ℹ️ Installation not currently available</p>
               <div>Try using Chrome/Edge on Android, or Safari on iOS to test installation</div>
             </div>
-            <div className="action-buttons">
+            <div className="action-buttons" style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '1.5rem',
+              width: '100%'
+            }}>
               {isIOS && (
-                <>
+                <div style={{width: '100%'}}>
                   <button className="btn btn-primary" onClick={() => setShowIOSModal(true)}>
                     📤 How to Add to Home Screen
                   </button>
@@ -106,9 +111,11 @@ function App() {
                     isOpen={showIOSModal}
                     onClose={() => setShowIOSModal(false)}
                   />
-                </>
+                </div>
               )}
-              <button className="btn" onClick={clearCache}>🗑️ Clear Cache</button>
+              <div style={{width: '100%'}}>
+                <button className="btn" onClick={clearCache}>🗑️ Clear Cache</button>
+              </div>
             </div>
           </div>
         </section>
