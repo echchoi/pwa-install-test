@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './App.css'
 import { useServiceWorker } from './hooks/useServiceWorker'
 // import package.json to display current version in the UI
@@ -11,19 +11,20 @@ function App() {
     useServiceWorker()
 
   const getPlatform = (): string => {
-    const ua = navigator.userAgent.toLowerCase()
-    if (ua.includes('iphone') || ua.includes('ipad')) return 'iOS'
-    if (ua.includes('android')) return 'Android'
-    if (ua.includes('mac')) return 'macOS'
-    if (ua.includes('win')) return 'Windows'
-    if (ua.includes('linux')) return 'Linux'
-    return 'Unknown'
+    const ua = navigator.userAgent.toLowerCase();
+    if (ua.includes('iphone') || ua.includes('ipad')) return 'iOS';
+    if (ua.includes('android')) return 'Android';
+    if (ua.includes('mac')) return 'macOS';
+    if (ua.includes('win')) return 'Windows';
+    if (ua.includes('linux')) return 'Linux';
+    return 'Unknown';
   }
 
-  const platform = getPlatform()
-  const isIOS = platform === 'iOS'
-  const version = pkg?.version ?? '0.0.0'
-  const rawBuildTimestamp = (import.meta as any).env?.VITE_BUILD_TIMESTAMP ?? new Date().toISOString()
+  const platform = getPlatform();
+  const isIOS = platform === 'iOS';
+  const version = pkg?.version ?? '0.0.0';
+  const rawBuildTimestamp = (import.meta as any).env?.VITE_BUILD_TIMESTAMP ?? new Date().toISOString();
+  const [showIOSModal, setShowIOSModal] = useState<boolean>(false);
 
   const formatUTC8 = (timestamp: string) => {
     const date = new Date(timestamp)
@@ -38,33 +39,6 @@ function App() {
 
   const buildTimestamp = formatUTC8(rawBuildTimestamp)
 
-  const [showIOSModal, setShowIOSModal] = useState<boolean>(false);
-
-  const openShareMenu = async () => {
-    const url = window.location.href
-    const title = document.title || 'PWA Installation Testing'
-
-    if ('share' in navigator) {
-      try {
-        await (navigator as any).share({ title, url })
-        return
-      } catch (e: any) {
-        if (e?.name === 'AbortError' || e?.name === 'NotAllowedError') {
-          return
-        }
-        // fall through to fallback below
-      }
-    }
-
-    try {
-      await navigator.clipboard.writeText(url)
-      alert(
-        'Share sheet unavailable or closed. URL copied to clipboard. In Safari, open the Share menu and choose "Add to Home Screen".'
-      )
-    } catch {
-      setShowIOSModal(true);
-    }
-  }
 
   const clearCache = async () => {
     if ('serviceWorker' in navigator) {
@@ -125,7 +99,7 @@ function App() {
             <div className="action-buttons">
               {isIOS && (
                 <>
-                  <button onClick={() => setShowIOSModal(true)}>
+                  <button className="btn btn-primary" onClick={() => setShowIOSModal(true)}>
                     📤 How to Add to Home Screen
                   </button>
                   <IOSInstallModal
@@ -134,7 +108,7 @@ function App() {
                   />
                 </>
               )}
-              <button onClick={clearCache}>🗑️ Clear Cache</button>
+              <button className="btn" onClick={clearCache}>🗑️ Clear Cache</button>
             </div>
           </div>
         </section>
