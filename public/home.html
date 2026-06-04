@@ -5,22 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="PWA Installation Testing Dashboard" />
   <title>PWA Installation Testing</title>
-
   <!-- PWA Manifest -->
   <link rel="manifest" href="/pwa-install-test/manifest.json" />
-
-  <!-- PWA Apple Touch Icon -->
-  <link rel="apple-touch-icon" href="/pwa-install-test/apple-touch-icon.png" />
-
   <!-- PWA Theme Color for Android -->
   <meta name="theme-color" content="#000000" />
-
-  <!-- PWA Viewport for Mobile -->
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="format-detection" content="telephone=no">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
   <style>
     /* Reset CSS */
     * {
@@ -28,228 +16,28 @@
       padding: 0;
       box-sizing: border-box;
     }
-
-    /* Mobile-first design */
+    /* Center content on page */
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
         Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
-      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      background: #f5f7fa;
       min-height: 100vh;
       margin: 0;
       padding: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
-    }
-
-    .app-container {
-      width: 100%;
-      max-width: 800px;
-      padding: 2rem;
-      text-align: center;
-    }
-
-    .logo {
-      width: 150px;
-      height: 150px;
-      background-image: url('/pwa-install-test/icon-192x192.png');
-      background-size: cover;
-      border-radius: 24px;
-      margin: 2rem auto;
-      border: 2px solid #e5e7eb;
-    }
-
-    .title {
-      font-size: 2.5rem;
-      color: #1f2937;
-      margin: 1rem 0;
-      font-weight: 700;
-    }
-
-    .subtitle {
-      font-size: 1.2rem;
-      color: #6b7280;
-      margin-bottom: 2rem;
-      line-height: 1.5;
-    }
-
-    .instructions {
-      background: white;
-      border-radius: 12px;
-      padding: 2rem;
-      margin: 2rem 0;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    }
-
-    .step {
-      margin: 1.5rem 0;
-      padding: 1rem;
-      background: #f9fafb;
-      border-radius: 8px;
-      border: 1px solid #e5e7eb;
-    }
-
-    .step-icon {
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .step-title {
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: #1f2937;
-      margin-bottom: 0.5rem;
-    }
-
-    .step-description {
-      color: #6b7280;
-      font-size: 0.95rem;
-    }
-
-    .action-button {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      border: none;
-      padding: 0.75rem 1.5rem;
-      border-radius: 16px;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      margin: 1rem 0;
-    }
-
-    .action-button:active {
-      transform: translateY(2px);
-    }
-
-    .action-button-primary {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-    }
-
-    .action-button-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
-    }
-
-    .footer {
-      margin-top: 4rem;
-      color: #6b7280;
-      font-size: 0.875rem;
-      opacity: 0.7;
-    }
-
-    .btn-common {
-      padding: 0.75rem 1.5rem;
-      border-radius: 16px;
-      border: none;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .btn-common.btn-primary {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-    }
-
-    @media (max-width: 768px) {
-      .app-container {
-        padding: 1rem;
-      }
-      .title {
-        font-size: 2rem;
-      }
-      .subtitle {
-        font-size: 1rem;
-      }
+      justify-content: center;
     }
   </style>
 </head>
-
 <body>
-  <div class="app-container">
-    <div class="logo" aria-label="PWA Installation Testing App Icon"></div>
-    <h1 class="title">PWA Installation Testing</h1>
-    <p class="subtitle" id="platform-description">Test PWA installation across different platforms</p>
-
-    <div class="instructions">
-      <h2 class="step-title" id="platform-title">Platform</h2>
-      <div class="step">
-        <div class="step-icon">📱</div>
-        <h3 class="step-title">Mobile First</h3>
-        <p class="step-description">Tested on the latest version of Chrome for Android, Safari for iOS, and major desktop browsers.</p>
-      </div>
-      <div class="step">
-        <div class="step-icon">🏆</div>
-        <h3 class="step-title">Installable</h3>
-        <p class="step-description">The app meets all PWA criteria including service worker, manifest, and HTTPS.</p>
-      </div>
-      <div class="step">
-        <div class="step-icon">⚙️</div>
-        <h3 class="step-title">Service Worker</h3>
-        <p class="step-description">Enables offline functionality and fast loading times with cache storage.</p>
-      </div>
-    </div>
-
-    <button id="install-button" class="action-button action-button-primary" style="display: none;">
-      Install
-    </button>
-
-    <div class="footer">
-      &copy; 2026 PWA Installation Testing | For testing only
-    </div>
-  </div>
-
+  <h1>Welcome</h1>
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const isAndroid = () => {
-        const ua = navigator.userAgent.toLowerCase();
-        return /android/.test(ua) && /chrome/.test(ua);
-      }
-
-      const isIOS = () => {
-        const ua = navigator.userAgent.toLowerCase();
-        return /iphone|ipad|macintosh/.test(ua) && 'standalone' in navigator;
-      }
-
-      const platformTitle = document.getElementById('platform-title');
-      const platformDescription = document.getElementById('platform-description');
-      const installButton = document.getElementById('install-button');
-
-      if (isAndroid()) {
-        platformTitle.textContent = 'One Tap Install on Android';
-        platformDescription.textContent = 'Add this web app to your home screen with a single tap.';
-        window.addEventListener('beforeinstallprompt', (e) => {
-          e.preventDefault();
-          installButton.style.display = 'block';
-          installButton.addEventListener('click', async () => {
-            installButton.style.display = 'none';
-            await e.prompt();
-          });
-        });
-      } else if (isIOS()) {
-        platformTitle.textContent = 'Add to Home Screen';
-        platformDescription.textContent = 'Tap the share button below to add to your home screen.';
-        installButton.style.display = 'block';
-        installButton.textContent = 'Tap Share → Add to Home Screen';
-      } else {
-        platformTitle.textContent = 'Install PWA';
-        platformDescription.textContent = 'Install this web app on your device to enjoy the full experience.';
-      }
-    });
-  </script>
-
-  <script>
+    // Redirect to the main app with JavaScript delay
     setTimeout(() => {
       window.location.href = '/pwa-install-test/';
-    }, 5000);
+    }, 1000);
   </script>
 </body>
 </html>
