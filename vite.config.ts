@@ -19,7 +19,7 @@ export default defineConfig({
         background_color: '#ffffff',
         display: 'standalone',
         scope: '/pwa-install-test/',
-        start_url: '/pwa-install-test/',
+        start_url: '/pwa-install-test/home.html',
         icons: [
           {
             src: 'icon-192x192.png',
