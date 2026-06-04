@@ -22,6 +22,7 @@ function App() {
 
   const platform = getPlatform();
   const isIOS = platform === 'iOS';
+  const isAndroid = platform === 'Android';
   const version = pkg?.version ?? '0.0.0';
   const rawBuildTimestamp = (import.meta as any).env?.VITE_BUILD_TIMESTAMP ?? new Date().toISOString();
   const [showIOSModal, setShowIOSModal] = useState<boolean>(false);
@@ -102,17 +103,22 @@ function App() {
               gap: '1.5rem',
               width: '100%'
             }}>
-              {isIOS && (
-                <div style={{width: '100%'}}>
+              <div style={{width: '100%'}}>
+                {isIOS && (
                   <button className="btn btn-primary" onClick={() => setShowIOSModal(true)}>
                     📤 How to Add to Home Screen
                   </button>
-                  <IOSInstallModal
-                    isOpen={showIOSModal}
-                    onClose={() => setShowIOSModal(false)}
-                  />
-                </div>
-              )}
+                )}
+                {isAndroid && (
+                  <button className="btn btn-primary" onClick={handleInstall}>
+                    🔽 Install App
+                  </button>
+                )}
+                <IOSInstallModal
+                  isOpen={showIOSModal}
+                  onClose={() => setShowIOSModal(false)}
+                />
+              </div>
               <div style={{width: '100%'}}>
                 <button className="btn" onClick={clearCache}>🗑️ Clear Cache</button>
               </div>
