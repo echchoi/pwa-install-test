@@ -7,7 +7,7 @@ import IOSInstallModal from './components/IOSInstallModal';
 import './components/IOSInstallModal.css';
 
 function App() {
-  const { isInstallable, isInstalled, swActive, manifestLoaded } =
+  const { isInstallable, isInstalled, swActive, manifestLoaded, handleInstall } =
     useServiceWorker()
 
   const getPlatform = (): string => {
